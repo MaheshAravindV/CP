@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "utility": "cpp",
+        "iostream": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "xtr1common": "cpp",
+        "xiosbase": "cpp",
+        "cmath": "cpp",
+        "algorithm": "cpp"
+    }
+}
