@@ -14,58 +14,52 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 
 const int N = 2e6 + 10;
 void solve() {
-    ll n, x;
-    cin >> n >> x;
-    if(n % 2 && x == 0)
-        return deb(-1);
-    if(x >= n)
+    int n;
+    cin >> n;
+    if(n == 1)
         return deb(1);
-    int i = 0;
-    while(n % (1 << i) <= x)
-        i++;
-    ll backup = n;
-    int oc = 0, ec = 0;
-    n -= n % (1 << (i-1));
-    for (int i = 0; i < 32;i++){
-        if(n & (1 << i)){
+    if(n == 2)
+        return deb(-1);
+    if(n == 3)
+        return deb("2 9 7\n4 6 3\n1 8 5");
+    if(n%2){
+        int line[n];
+        for (int i = 0; i < n;i++){
+            line[i] = i / 2 + 1;
             if(i%2)
-                oc++;
-            else
-                ec++;
+                line[i] += n * (n / 2 + 1);
+        }
+        for (int i = 0; i < n;i++){
+            for (int j = 0; j < n;j++){
+                cout << line[j] << ' ';
+                line[j] += n / 2;
+                if(j%2 == 0)
+                    line[j] += 1;
+            }
+            deb();
         }
     }
-    int ans1 = oc + ec * 2 + 1;
-
-    n = backup;
-    oc = 0, ec = 0;
-    for (int i = 0; i < 32;i++){
-        if(n & (1 << i)){
+    else{
+        int line[n];
+        for (int i = 0; i < n;i++){
+            line[i] = i / 2 + 1;
             if(i%2)
-                oc++;
-            else
-                ec++;
+                line[i] += (n * n) / 2;
+        }
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n;j++){
+                cout << line[j] << ' ';
+                line[j] += n / 2;
+            }
+            deb();
         }
     }
-    int ans2 = oc + ec * 2;
-
-    n = backup - x;
-    oc = 0, ec = 0;
-    for (int i = 0; i < 32;i++){
-        if(n & (1 << i)){
-            if(i%2)
-                oc++;
-            else
-                ec++;
-        }
-    }
-    int ans3 = oc + ec * 2 + 1;
-    deb(min({ans1, ans2,ans3}));
 }
 
 int main() {
 #ifndef LOCAL
-    // ios_base::sync_with_stdio(false);
-    // cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 #endif
     int T = 1;
     cin >> T;

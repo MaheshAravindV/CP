@@ -14,18 +14,18 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 
 const int N = 2e6 + 10;
 void solve() {
-    int n;
-    cin >> n;
-    vector<int> a(2 * n);
-    for (auto& x : a)
-        cin >> x;
-    sort(a.begin(), a.end());
-    int rs = (a[0] + a[2 * n - 1]);
-    for (int i = 1; i < n;i++){
-        if(a[i] + a[2*n-i-1] != rs)
-            return deb("IMBALANCED");
+    string a, b;
+    cin >> a >> b;
+    if(a.size() > b.size())
+        swap(a, b);
+    for (int l = a.size(); l >= 0; l--){
+        string test;
+        for (int i = 0; i <= a.size() - l;i++) if(b.find(a.substr(i,l)) != string::npos){
+                deb(a.size() + b.size() - 2 * l);
+                l = -1;
+                break;
+        }
     }
-    deb("PERFECT");
 }
 
 int main() {

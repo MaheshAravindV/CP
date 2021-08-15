@@ -16,16 +16,14 @@ const int N = 2e6 + 10;
 void solve() {
     int n;
     cin >> n;
-    vector<int> a(2 * n);
+    vector<int> a(n);
     for (auto& x : a)
         cin >> x;
-    sort(a.begin(), a.end());
-    int rs = (a[0] + a[2 * n - 1]);
-    for (int i = 1; i < n;i++){
-        if(a[i] + a[2*n-i-1] != rs)
-            return deb("IMBALANCED");
-    }
-    deb("PERFECT");
+    int mx = a[0];
+    double sum = 0;
+    for (int i = 0; i < n;i++)mx = max(mx, a[i]),sum += a[i];
+    double ans = (sum - mx) / (n - 1) + mx;
+    deb(ans);
 }
 
 int main() {
@@ -33,6 +31,7 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #endif
+    cout << fixed << setprecision(10);
     int T = 1;
     cin >> T;
     while (T--) solve();

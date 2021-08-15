@@ -14,18 +14,35 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 
 const int N = 2e6 + 10;
 void solve() {
-    int n;
-    cin >> n;
-    vector<int> a(2 * n);
+    int n,k;
+    cin >> n >> k;
+    vector<int> a(n);
+    vector<int> t(n);
+    vector<int> ls(n), rs(n);
     for (auto& x : a)
         cin >> x;
-    sort(a.begin(), a.end());
-    int rs = (a[0] + a[2 * n - 1]);
-    for (int i = 1; i < n;i++){
-        if(a[i] + a[2*n-i-1] != rs)
-            return deb("IMBALANCED");
+    for (auto& x : t)
+        cin >> x;
+    for (int i = 0; i < n;i++)
+        t[i] = max(0, t[i]);
+    if(n == 1)
+        return deb(max(0,a[0] + k * t[0]));
+    ls[0] = max(0, a[0]);
+    rs[n - 1] = max(0,a[n - 1]);
+    for (int i = 1; i < n-1;i++){
+        ls[i] = ls[i - 1] + a[i];
+        ls[i] = max(0, ls[i]);
     }
-    deb("PERFECT");
+    for (int i = n - 2; i > 0;i--){
+        rs[i] = rs[i + 1] + a[i];
+        rs[i] = max(0, rs[i]);
+    }
+    int res = max({a[0] + t[0] * k + rs[1], a[n - 1] + t[n - 1] * k + ls[n-2],0});
+    // deb(res);
+    for (int i = 1; i < n-1;i++) res = max(res,a[i] + t[i] * k + ls[i-1] + rs[i+1]);
+    // deb(ls);
+    // deb(rs);
+    deb(res);
 }
 
 int main() {
