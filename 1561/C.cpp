@@ -16,29 +16,38 @@ const int N = 2e6 + 10;
 const ll INF = 0x7f7f7f7f7f7f7f7f;
 const int inf = 0x7f7f7f7f;
 void solve() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> h(n);
-    for (auto& x : h)
-        cin >> x;
-    vector<ll> sums(n - k+1);
-    for (int i = 0; i < k;i++)
-        sums[0] += h[i];
-    for (int i = 1; i < n - k + 1;i++)
-        sums[i] = sums[i-1] + h[i + k - 1] - h[i - 1];
-    int min = -1;
-    for (int i = 0; i < n - k + 1;i++)
-        if(min == -1 or sums[i] < sums[min])
-            min = i;
-    deb(min+1);
+    int n;
+    cin >> n;
+    vector<pair<int, int>> a;
+    int total = 0;
+    for(int p = 0;p < n;p++){
+        int ki;
+        cin >> ki;
+        total += ki;
+        int maxval = 0;
+        for (int i = 0; i < ki;i++){
+            int x;
+            cin >> x;
+            maxval = max(maxval, x + 1 - i);
+        }
+        a.push_back({maxval,ki});
+    }
+    sort(a.begin(),a.end());
+    int fans = 0,taken = 0;
+    for (int i = 0; i < n;i++){
+        fans = max(fans, a[i].first - taken);
+        taken += a[i].second;
+    }
+    deb(fans);
 }
-int main(){
+
+int main() {
 #ifndef LOCAL
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

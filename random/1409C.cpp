@@ -11,34 +11,37 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #else
 #define dbg(...)
 #endif
-
-const int N = 2e6 + 10;
 const ll INF = 0x7f7f7f7f7f7f7f7f;
 const int inf = 0x7f7f7f7f;
+const int N = 2e6 + 10;
 void solve() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> h(n);
-    for (auto& x : h)
-        cin >> x;
-    vector<ll> sums(n - k+1);
-    for (int i = 0; i < k;i++)
-        sums[0] += h[i];
-    for (int i = 1; i < n - k + 1;i++)
-        sums[i] = sums[i-1] + h[i + k - 1] - h[i - 1];
-    int min = -1;
-    for (int i = 0; i < n - k + 1;i++)
-        if(min == -1 or sums[i] < sums[min])
-            min = i;
-    deb(min+1);
+    int n, x, y;
+    cin >> n >> x >> y;
+    if(n == 2)
+        return deb(x, y);
+    pair<int, int> min = {-1,-1};
+    for (int gap = 1; gap <= n;gap++){
+        int d = (y - x) / gap;
+        if((y-x)%gap || (y - (n-1)*d) > x || (x + gap*d) < y)
+            continue;
+        int a = max(x - (((x-1) / d) * d),y - (n-1)*d);
+        // deb(a,d,a+(n-1)*d);
+        if(a + n * d < min.first + n * min.second or min.first == -1)
+            min.first = a, min.second = d;
+    }
+    for (int i = 0; i < n;i++){
+        cout << min.first + i * min.second << ' ';
+    }
+    deb();
 }
-int main(){
+
+int main() {
 #ifndef LOCAL
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

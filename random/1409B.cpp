@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+    #include <bits/stdc++.h>
 using namespace std; using ll = long long;
 #define nl "\n"
 
@@ -13,32 +13,32 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #endif
 
 const int N = 2e6 + 10;
-const ll INF = 0x7f7f7f7f7f7f7f7f;
-const int inf = 0x7f7f7f7f;
 void solve() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> h(n);
-    for (auto& x : h)
-        cin >> x;
-    vector<ll> sums(n - k+1);
-    for (int i = 0; i < k;i++)
-        sums[0] += h[i];
-    for (int i = 1; i < n - k + 1;i++)
-        sums[i] = sums[i-1] + h[i + k - 1] - h[i - 1];
-    int min = -1;
-    for (int i = 0; i < n - k + 1;i++)
-        if(min == -1 or sums[i] < sums[min])
-            min = i;
-    deb(min+1);
+    ll a, b, x, y,n;
+    cin >> a >> b >> x >> y >> n;
+    ll back1 = a, back2 = b,back3 = n;
+    ll d = min(a - x, n);
+    a -= d;
+    n -= d;
+    d = min(b - y, n);
+    b -= d;
+    ll ans = a * b;
+    a = back1, b = back2,n = back3;
+    d = min(b - y, n);
+    b -= d;
+    n -= d;
+    d = min(a - x, n);
+    a -= d;
+    deb(min(ans, a * b));
 }
-int main(){
+
+int main() {
 #ifndef LOCAL
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

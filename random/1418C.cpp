@@ -13,32 +13,33 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #endif
 
 const int N = 2e6 + 10;
-const ll INF = 0x7f7f7f7f7f7f7f7f;
-const int inf = 0x7f7f7f7f;
 void solve() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> h(n);
-    for (auto& x : h)
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a)
         cin >> x;
-    vector<ll> sums(n - k+1);
-    for (int i = 0; i < k;i++)
-        sums[0] += h[i];
-    for (int i = 1; i < n - k + 1;i++)
-        sums[i] = sums[i-1] + h[i + k - 1] - h[i - 1];
-    int min = -1;
-    for (int i = 0; i < n - k + 1;i++)
-        if(min == -1 or sums[i] < sums[min])
-            min = i;
-    deb(min+1);
+    int cost = 0;
+    if(a[0] == 1)
+        cost++;
+    int k = 0;
+    for (int i = 1; i < n;i++){
+        if(a[i] == 1)
+            k++;
+        else
+            cost += k / 3,k = 0;
+    }
+    cost += k / 3;
+    deb(cost);
 }
-int main(){
+
+int main() {
 #ifndef LOCAL
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

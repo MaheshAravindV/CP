@@ -12,23 +12,41 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #define dbg(...)
 #endif
 
-const int N = 2e6 + 10;
+string s;
 void solve() {
-    int n;
-    cin >> n;
-    vector<int> x(n);
-    for (auto& i : x)
-        cin >> i;
-    sort(x.begin(), x.end());
-    int q;
-    cin >> q;
-    // deb("Q",q);
-    for (int i = 0; i < q;i++){
-        int m;
-        cin >> m;
-        int j = upper_bound(x.begin(), x.end(), m) - x.begin();
-        deb(j);
+    cin >> s;
+    int n = (int)s.length();
+    string removal_order = "";
+    for (int i = n - 1; i >= 0; i--) {
+        if (removal_order.find(s[i]) == string::npos)
+            removal_order += s[i];
     }
+    reverse(removal_order.begin(), removal_order.end());
+    int m = (int)removal_order.length();
+    vector<int> cost(26);
+    map<char, int> f;
+    for (char c : s) {
+        f[c]++;
+    }
+    for (int i = 0; i < m; i++) {
+        cost[removal_order[i]-'a'] = f[removal_order[i]] / (i + 1);
+    }
+    int stop = -1;
+    for (int i = 0; i < n; i++)
+    {
+        cost[s[i] - 'a']--;
+        if (cost[s[i] - 'a'] < 0) {
+            cost[s[i]-'a']++;
+            stop = i;
+            break;
+        }
+    }
+    for (int i = 0; i < 26; i++) {
+        if (cost[i] > 0 or cost[i] < 0)
+            return deb(-1);
+    }
+
+    deb(s.substr(0, stop), removal_order);
 }
 
 int main() {
@@ -37,7 +55,7 @@ int main() {
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

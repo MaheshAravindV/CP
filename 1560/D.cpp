@@ -12,33 +12,37 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #define dbg(...)
 #endif
 
-const int N = 2e6 + 10;
-const ll INF = 0x7f7f7f7f7f7f7f7f;
-const int inf = 0x7f7f7f7f;
-void solve() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> h(n);
-    for (auto& x : h)
-        cin >> x;
-    vector<ll> sums(n - k+1);
-    for (int i = 0; i < k;i++)
-        sums[0] += h[i];
-    for (int i = 1; i < n - k + 1;i++)
-        sums[i] = sums[i-1] + h[i + k - 1] - h[i - 1];
-    int min = -1;
-    for (int i = 0; i < n - k + 1;i++)
-        if(min == -1 or sums[i] < sums[min])
-            min = i;
-    deb(min+1);
+int cost(string& x,string& n){
+    int np = 0,cost = 0;
+    for (int i = 0; i < x.length();i++){
+        while(np < n.length() && n[np] != x[i])
+            np++, cost++;
+        if(np >= n.length())
+            cost += x.length() - i;
+    }
+    cost += n.length() - np;
+    return cost;
 }
-int main(){
+vector<string> powers = {"1","2","4","8","16","32","64","128","256","512","1024","2048","4096","8192","16384","32768","65536","131072","262144","524288","1048576","2097152","4194304","8388608","16777216","33554432","67108864","134217728","268435456","536870912"};
+// vector<string> powers = {"65536"};
+const int N = 2e6 + 10;
+void solve() {
+    string n;
+    cin >> n;
+    int mincost = 10000;
+    for (auto& x : powers) {
+        mincost = min(mincost, cost(x, n));
+    }
+    deb(mincost);
+}
+
+int main() {
 #ifndef LOCAL
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

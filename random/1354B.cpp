@@ -12,33 +12,41 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #define dbg(...)
 #endif
 
-const int N = 2e6 + 10;
 const ll INF = 0x7f7f7f7f7f7f7f7f;
 const int inf = 0x7f7f7f7f;
+const int N = 2e6 + 10;
 void solve() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> h(n);
-    for (auto& x : h)
-        cin >> x;
-    vector<ll> sums(n - k+1);
-    for (int i = 0; i < k;i++)
-        sums[0] += h[i];
-    for (int i = 1; i < n - k + 1;i++)
-        sums[i] = sums[i-1] + h[i + k - 1] - h[i - 1];
-    int min = -1;
-    for (int i = 0; i < n - k + 1;i++)
-        if(min == -1 or sums[i] < sums[min])
-            min = i;
-    deb(min+1);
+    string in;
+    cin >> in;
+    int n = in.length();
+    vector<vector<int>> indices(3);
+    int minans = inf;
+    for (int i = 0; i < n;i++) indices[in[i] - '1'].push_back(i);
+    for (int i = 0; i < n;i++){
+        vector<int> ni(3);
+        int f = 0;
+        for (int j = 0; j < 3;j++){
+            auto it = lower_bound(indices[j].begin(), indices[j].end(), i);
+            if(it != indices[j].end())
+                ni[j] = *it;
+            else
+                f = 1;
+        }
+        if(f)
+            continue;
+        int ans = *max_element(ni.begin(), ni.end())-i+1;
+        minans = min(minans, ans);
+    }
+    deb(minans == inf ? 0 : minans);
 }
-int main(){
+
+int main() {
 #ifndef LOCAL
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

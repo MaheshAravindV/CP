@@ -13,32 +13,50 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #endif
 
 const int N = 2e6 + 10;
-const ll INF = 0x7f7f7f7f7f7f7f7f;
-const int inf = 0x7f7f7f7f;
 void solve() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> h(n);
-    for (auto& x : h)
-        cin >> x;
-    vector<ll> sums(n - k+1);
-    for (int i = 0; i < k;i++)
-        sums[0] += h[i];
-    for (int i = 1; i < n - k + 1;i++)
-        sums[i] = sums[i-1] + h[i + k - 1] - h[i - 1];
-    int min = -1;
-    for (int i = 0; i < n - k + 1;i++)
-        if(min == -1 or sums[i] < sums[min])
-            min = i;
-    deb(min+1);
+    int n;
+    cin >> n;
+    string inp;
+    cin >> inp;
+    int start = inp.find('R');
+    if(start == string::npos)
+        start = inp.find('B');
+    if(start == string::npos){
+        while(n--){
+            if(n%2)
+                cout << 'B';
+            else
+                cout << 'R';
+        }
+        deb();
+        return;
+    }
+    for (int i = start + 1; i < n;i++){
+        if(inp[i] == '?'){
+            if(inp[i-1] == 'R')
+                inp[i] = 'B';
+            else
+                inp[i] = 'R';
+        }
+    }
+    for (int i = start - 1; i >= 0;i--){
+        if(inp[i] == '?'){
+            if(inp[i+1] == 'R')
+                inp[i] = 'B';
+            else
+                inp[i] = 'R';
+        }
+    }
+    deb(inp);
 }
-int main(){
+
+int main() {
 #ifndef LOCAL
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }
