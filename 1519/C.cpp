@@ -14,21 +14,33 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 
 const int N = 2e6 + 10;
 void solve() {
-    int n;
+    int n,mu = 0;
     cin >> n;
-    vector<int> tickets(n);
-    for (auto& x : tickets)
+    vector<int> u(n),s(n);
+    for (auto& x : u)
+        cin >> x,mu = max(mu,x);
+    for (auto& x : s)
         cin >> x;
-    sort(tickets.begin(), tickets.end());
-    int maxlength = 1, curlen = 1;
-    for (int i = 1; i < n;i++){
-        // deb(tickets[i], tickets[i - 1]);
-        if(tickets[i] - tickets[i-1] < 2)
-            curlen++;
-        else maxlength = max(maxlength, curlen), curlen = 1;
+    vector<vector<ll>> univsum(mu);
+    for (int i = 0; i < n;i++)
+        univsum[u[i] - 1].push_back(s[i]);
+    for (auto& x : univsum)
+        sort(x.begin(), x.end(),greater<int>());
+    for (auto& x : univsum)
+        for (int i = 1; i < x.size(); i++)
+            x[i] += x[i - 1];
+    vector<ll> regionsum(n);
+    for (auto& x : univsum) {
+        for (int k = 1; k <= x.size();k++){
+            if (x.size() / k == 0)
+                continue;
+            int index = (x.size() / k) * k - 1;
+            regionsum[k-1] += x[index];
+        }   
     }
-    maxlength = max(maxlength, curlen);
-    deb(maxlength);
+    for (auto& x : regionsum)
+        cout << x << ' ';
+    deb();
 }
 
 int main() {
@@ -37,7 +49,7 @@ int main() {
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

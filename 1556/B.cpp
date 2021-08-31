@@ -16,19 +16,34 @@ const int N = 2e6 + 10;
 void solve() {
     int n;
     cin >> n;
-    vector<int> tickets(n);
-    for (auto& x : tickets)
+    vector<int> a(n);
+    for (auto& x : a)
         cin >> x;
-    sort(tickets.begin(), tickets.end());
-    int maxlength = 1, curlen = 1;
-    for (int i = 1; i < n;i++){
-        // deb(tickets[i], tickets[i - 1]);
-        if(tickets[i] - tickets[i-1] < 2)
-            curlen++;
-        else maxlength = max(maxlength, curlen), curlen = 1;
+    vector<int> count(2);
+    for (auto& x : a)
+        count[x % 2]++;
+    if(n%2 == 0){
+        if(count[0] != count[1])
+            return deb(-1);
+        int ind1 = 0,ind2 = 1;
+        int c1 = 0, c2 = 0;
+        for (int i = 0; i < n;i++){
+            if(a[i]%2)
+                c1 += abs(i - ind1), c2 += abs(i - ind2), ind1+=2, ind2+=2;
+        }
+        return deb(min(c1, c2));
     }
-    maxlength = max(maxlength, curlen);
-    deb(maxlength);
+    int ind = 0;
+    if(abs(count[0] - count[1]) > 1)
+        return deb(-1);
+    if(count[0] > count[1])
+        ind = 1;
+    int c = 0;
+    for (int i = 0; i < n;i++){
+        if(a[i] % 2)
+            c += abs(i - ind),ind += 2;
+    }
+    deb(c);
 }
 
 int main() {
@@ -37,7 +52,7 @@ int main() {
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

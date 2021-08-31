@@ -14,21 +14,15 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 
 const int N = 2e6 + 10;
 void solve() {
-    int n;
-    cin >> n;
-    vector<int> tickets(n);
-    for (auto& x : tickets)
-        cin >> x;
-    sort(tickets.begin(), tickets.end());
-    int maxlength = 1, curlen = 1;
-    for (int i = 1; i < n;i++){
-        // deb(tickets[i], tickets[i - 1]);
-        if(tickets[i] - tickets[i-1] < 2)
-            curlen++;
-        else maxlength = max(maxlength, curlen), curlen = 1;
-    }
-    maxlength = max(maxlength, curlen);
-    deb(maxlength);
+    int c, d;
+    cin >> c >> d;
+    if(c == 0 && d == 0)
+        return deb(0);
+    if(c%2 != d%2)
+        return deb(-1);
+    if(c == d)
+        return deb(1);
+    return deb(2);
 }
 
 int main() {
@@ -37,7 +31,7 @@ int main() {
     cin.tie(NULL);
 #endif
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
     return 0;
 }

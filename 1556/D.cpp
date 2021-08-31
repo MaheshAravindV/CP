@@ -14,21 +14,39 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 
 const int N = 2e6 + 10;
 void solve() {
-    int n;
-    cin >> n;
-    vector<int> tickets(n);
-    for (auto& x : tickets)
-        cin >> x;
-    sort(tickets.begin(), tickets.end());
-    int maxlength = 1, curlen = 1;
-    for (int i = 1; i < n;i++){
-        // deb(tickets[i], tickets[i - 1]);
-        if(tickets[i] - tickets[i-1] < 2)
-            curlen++;
-        else maxlength = max(maxlength, curlen), curlen = 1;
+    int n, k;
+    cin >> n >> k;
+    int AandB,AorB,BandC,BorC,AandC,AorC;
+    cout << "and 1 2" << endl;
+    cin >> AandB;
+    cout << "or 1 2" << endl;
+    cin >> AorB;
+    cout << "and 2 3" << endl;
+    cin >> BandC;
+    cout << "or 2 3" << endl;
+    cin >> BorC;
+    cout << "and 1 3" << endl;
+    cin >> AandC;
+    cout << "or 1 3" << endl;
+    cin >> AorC;
+
+    int ab = AandB + AorB, bc = BandC + BorC, ac = AandC + AorC;
+    int a = (ab + ac - bc) / 2, b = ab - a, c = ac - a;
+    vector<int> res;
+    res.push_back(a);
+    res.push_back(b);
+    res.push_back(c);
+    for (int i = 4; i <= n;i++){
+        int andi, ori, sumi;
+        cout << "and 1 " << i << endl;
+        cin >> andi;
+        cout << "or 1 " << i << endl;
+        cin >> ori;
+        sumi = andi + ori;
+        res.push_back(sumi - a);
     }
-    maxlength = max(maxlength, curlen);
-    deb(maxlength);
+    sort(res.begin(), res.end());
+    cout << "finish " << res[k-1] << endl;
 }
 
 int main() {
