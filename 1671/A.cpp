@@ -13,38 +13,30 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #endif
 
 const int N = 2e6 + 10;
-
-int score(string s,int l,int r){
-    if(l == r-1) return 1;
-    if(l > r-1) return 0;
-    vector<int> breaks;
-    int counter = 0;
-    for(int i = l;i <= r;i++){
-        if(s[i] == '(') counter++;
-        else counter--;
-        if(counter == 0) breaks.push_back(i);
-    }
-    if(breaks.size() == 1) return 2*score(s,l+1,r-1);
-    else{
-        int sum = 0;
-        int lcurr = l,rcurr;
-        for(int i : breaks){
-            rcurr = i;
-            sum += score(s,lcurr,rcurr);
-            lcurr = rcurr+1;
+void solve() {
+    string s;
+    cin >> s;
+    int curlen = 0;
+    for(int i = 0;i < s.size();i++){
+        if(i > 0){
+            if(s[i-1] != s[i]){
+                if(curlen == 1) return deb("NO");
+                curlen = 0;
+            }
         }
-        sum += score(s,lcurr,r);
-        return sum;
+        curlen++;
     }
-}
-
-int scoreOfParentheses(string s) {
-    int l = 0,r = s.size()-1;
-    return score(s,l,r);
+    if(curlen == 1) return deb("NO");
+    deb("YES");
 }
 
 int main() {
-    string s;
-    cin >> s;
-    deb(scoreOfParentheses(s));
+#ifndef LOCAL
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+#endif
+    int T = 1;
+    cin >> T;
+    while (T--) solve();
+    return 0;
 }

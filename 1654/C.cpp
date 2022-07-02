@@ -13,38 +13,41 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #endif
 
 const int N = 2e6 + 10;
-
-int score(string s,int l,int r){
-    if(l == r-1) return 1;
-    if(l > r-1) return 0;
-    vector<int> breaks;
-    int counter = 0;
-    for(int i = l;i <= r;i++){
-        if(s[i] == '(') counter++;
-        else counter--;
-        if(counter == 0) breaks.push_back(i);
+void solve() {
+    ll n,t,sum = 0;
+    cin >> n;
+    unordered_multiset<ll> a,need;
+    while(n--){
+        cin >> t;
+        sum += t;
+        a.insert(t);
     }
-    if(breaks.size() == 1) return 2*score(s,l+1,r-1);
-    else{
-        int sum = 0;
-        int lcurr = l,rcurr;
-        for(int i : breaks){
-            rcurr = i;
-            sum += score(s,lcurr,rcurr);
-            lcurr = rcurr+1;
+    // deb(sum);
+    need.insert(sum);
+    while(a.size() > 0 and need.size() <= a.size()){
+        ll x = *need.begin();
+        if(a.find(x) != a.end()){
+            a.erase(a.find(x));
+            need.erase(need.find(x));
         }
-        sum += score(s,lcurr,r);
-        return sum;
+        else{
+            need.erase(need.find(x));
+            need.insert(x/2);
+            need.insert((x+1)/2);
+        }
     }
-}
-
-int scoreOfParentheses(string s) {
-    int l = 0,r = s.size()-1;
-    return score(s,l,r);
+    
+    if(a.size() == 0) return deb("YES");
+    deb("NO");
 }
 
 int main() {
-    string s;
-    cin >> s;
-    deb(scoreOfParentheses(s));
+#ifndef LOCAL
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+#endif
+    int T = 1;
+    cin >> T;
+    while (T--) solve();
+    return 0;
 }

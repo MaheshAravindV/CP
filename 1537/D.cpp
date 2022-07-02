@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include<map>
 using namespace std; using ll = long long;
 #define nl "\n"
 
@@ -17,20 +18,19 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H 
 #endif
 
 const int N = 2e6 + 10;
+
+int pow2(int n){
+    int res = 0;
+    while(n > 1 and n%2 == 0) n/=2,res++;
+    if(n != 1) return -1;
+    return res;
+}
+
 void solve() {
     int n;
     cin >> n;
-    int count = 0;
-    if(n % 2)deb("Bob");
-    else{
-        while(n%2 == 0){
-            count++;
-            n /= 2;
-        }
-        dbg(count);
-        if(count % 2 == 1)deb("Bob");
-        else deb("Alice");
-    } 
+    if(n & 1 or (pow2(n) > 0 and pow2(n) % 2 == 1)) return deb("Bob");
+    deb("Alice");
 }
 
 int main() {

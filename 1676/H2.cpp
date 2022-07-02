@@ -2,6 +2,18 @@
 using namespace std; using ll = long long;
 #define nl "\n"
 
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/detail/standard_policies.hpp>
+using namespace __gnu_pbds;
+typedef tree<
+int,
+null_type,
+less_equal<int>,
+rb_tree_tag,
+tree_order_statistics_node_update>
+ordered_mset;
+
 template <typename A, typename B>ostream& operator<<(ostream& os, const pair<A, B>& p) { return os << '(' << p.first << ' ' << p.second << ')'; }
 template <typename X, typename T = typename enable_if<!is_same<X, string>::value, typename X::value_type>::type>  ostream& operator<<(ostream& o, const X& v) { string s;  for (const T& x : v) o << s << x, s = " ";  return o; }
 void deb() { cout << "\n"; }
@@ -13,38 +25,27 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #endif
 
 const int N = 2e6 + 10;
-
-int score(string s,int l,int r){
-    if(l == r-1) return 1;
-    if(l > r-1) return 0;
-    vector<int> breaks;
-    int counter = 0;
-    for(int i = l;i <= r;i++){
-        if(s[i] == '(') counter++;
-        else counter--;
-        if(counter == 0) breaks.push_back(i);
+void solve() {
+    int n;
+    cin >> n;
+    ordered_mset x;
+    int sum = 0;
+    for(int i = 0;i < n;i++){
+        int t;
+        cin >> t;
+        sum += i-x.order_of_key(t);
+        x.insert(t);
     }
-    if(breaks.size() == 1) return 2*score(s,l+1,r-1);
-    else{
-        int sum = 0;
-        int lcurr = l,rcurr;
-        for(int i : breaks){
-            rcurr = i;
-            sum += score(s,lcurr,rcurr);
-            lcurr = rcurr+1;
-        }
-        sum += score(s,lcurr,r);
-        return sum;
-    }
-}
-
-int scoreOfParentheses(string s) {
-    int l = 0,r = s.size()-1;
-    return score(s,l,r);
+    deb(sum);
 }
 
 int main() {
-    string s;
-    cin >> s;
-    deb(scoreOfParentheses(s));
+#ifndef LOCAL
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+#endif
+    int T = 1;
+    cin >> T;
+    while (T--) solve();
+    return 0;
 }

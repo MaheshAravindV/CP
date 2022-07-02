@@ -13,38 +13,36 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #endif
 
 const int N = 2e6 + 10;
-
-int score(string s,int l,int r){
-    if(l == r-1) return 1;
-    if(l > r-1) return 0;
-    vector<int> breaks;
-    int counter = 0;
-    for(int i = l;i <= r;i++){
-        if(s[i] == '(') counter++;
-        else counter--;
-        if(counter == 0) breaks.push_back(i);
-    }
-    if(breaks.size() == 1) return 2*score(s,l+1,r-1);
-    else{
-        int sum = 0;
-        int lcurr = l,rcurr;
-        for(int i : breaks){
-            rcurr = i;
-            sum += score(s,lcurr,rcurr);
-            lcurr = rcurr+1;
+void solve() {
+    int n,k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    string potans;
+    int spt = 0,fpt = 0;
+    bool flag = 0;
+    for(;fpt < min(n,k);){
+        if(s[fpt] < s[spt]) fpt++,deb("TEST");
+        else if(s[fpt] == s[0]){
+            flag = true;
+            spt = 0;
+            potans = s.substr(0,fpt);
+            deb(potans);
         }
-        sum += score(s,lcurr,r);
-        return sum;
+        else break;
+        if(flag) spt++;
     }
-}
-
-int scoreOfParentheses(string s) {
-    int l = 0,r = s.size()-1;
-    return score(s,l,r);
+    potans = s.substr(0,fpt);
+    deb(potans);
 }
 
 int main() {
-    string s;
-    cin >> s;
-    deb(scoreOfParentheses(s));
+#ifndef LOCAL
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+#endif
+    int T = 1;
+    // cin >> T;
+    while (T--) solve();
+    return 0;
 }

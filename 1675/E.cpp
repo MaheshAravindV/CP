@@ -13,38 +13,33 @@ template <typename Head, typename... Tail>void deb(Head H, Tail... T){cout << H;
 #endif
 
 const int N = 2e6 + 10;
+void solve() {
+    int n,k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    vector<int> val(26);
+    for(int i = 0;i < 26;i++) val[i] = i;
+    int i = 0,m = 0;
+    while(i < n and val[s[i]-'a'] <= k) m = max(m,s[i]-'a'),i++;
+    for(int i = m;i >= 0;i--) val[i] = 0;
+    k -= m;
 
-int score(string s,int l,int r){
-    if(l == r-1) return 1;
-    if(l > r-1) return 0;
-    vector<int> breaks;
-    int counter = 0;
-    for(int i = l;i <= r;i++){
-        if(s[i] == '(') counter++;
-        else counter--;
-        if(counter == 0) breaks.push_back(i);
+    if(i < n){
+        int start = s[i] - k - 'a',end = s[i]-'a';
+        for(int i = start;i <= end;i++) val[i] = start;
     }
-    if(breaks.size() == 1) return 2*score(s,l+1,r-1);
-    else{
-        int sum = 0;
-        int lcurr = l,rcurr;
-        for(int i : breaks){
-            rcurr = i;
-            sum += score(s,lcurr,rcurr);
-            lcurr = rcurr+1;
-        }
-        sum += score(s,lcurr,r);
-        return sum;
-    }
-}
-
-int scoreOfParentheses(string s) {
-    int l = 0,r = s.size()-1;
-    return score(s,l,r);
+    for(int i = 0;i < n;i++) cout << (char)(val[s[i]-'a'] + 'a');
+    cout << endl;
 }
 
 int main() {
-    string s;
-    cin >> s;
-    deb(scoreOfParentheses(s));
+#ifndef LOCAL
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+#endif
+    int T = 1;
+    cin >> T;
+    while (T--) solve();
+    return 0;
 }
